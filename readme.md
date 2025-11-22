@@ -16,3 +16,7 @@ Basic requests:
 
 The base interaction capabilities are packaged as a library, which can
 be extended to support additional features and interfaces.
+
+# Todo
+
+Consider introducing a token that you can get by using the network
