@@ -1,5 +1,5 @@
 const server = require('./lib/server');
-const client = require('./lib/client');
+const client = require('./lib/nodeClient');
 
 const mode = process.argv[2];
 const command = process.argv[3];

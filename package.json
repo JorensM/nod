@@ -1,0 +1,9 @@
+{
+    "scripts": {
+        "server": "node nod.js server",
+        "client": "node nod.js client"
+    },
+    "dependencies": {
+        "socket.io": "^4.8.1"
+    }
+}
