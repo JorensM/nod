@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <button id="list-devices">
+            List Devices
+        </button>
+        <ul id="devices">
+
+        </ul>
+    </body>
+    <script src="./build/browser/nod.js"></script>
+    <script>
+        // import BrowserClient from './build/browser/nod.js';
+        console.log(nod);
+        nod.setName('browser');
+        nod.connect();
+
+        const devicesList = document.getElementById('devices');
+
+        document.getElementById('list-devices').addEventListener('click', async () => {
+            const devices = (await nod.list()).data;
+            console.log(devices);
+            devicesList.innerHTML = '';
+
+            const listStr = devices.map((device) => '<li>' + device + '</li>').join();
+
+            devicesList.innerHTML = listStr;
+        })
+    </script>
+</html>

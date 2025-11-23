@@ -1,5 +1,8 @@
-const server = require('./lib/server');
-const NodeClient = require('./lib/nodeClient');
+import server from './lib/server.js';
+import NodeClient from './lib/nodeClient.js';
+
+//const server = require('./lib/server');
+//const NodeClient = require('./lib/nodeClient');
 
 const mode = process.argv[2];
 const command = process.argv[3];
