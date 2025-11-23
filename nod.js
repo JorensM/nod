@@ -8,9 +8,14 @@ const commandArg = process.argv[4];
 if(mode === 'server') {
     server.start();
 } else {
-    // console.log('running command ' + command);
-    client[command](commandArg).then((res) => {
-        // console.log('command resolved');
+    (async () => {
+        await client.connect('client1');
+        console.log('running command ' + command);
+        const res = await client[command](commandArg);//.then((res) => {
         console.log(res);
-    });
+        //     // console.log('command resolved');
+        //     console.log(res);
+        // });
+
+    })();
 }
