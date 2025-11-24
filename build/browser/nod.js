@@ -3415,6 +3415,9 @@
     list = async () => {
       return await this.request("/list");
     };
+    devices = async (name = null) => {
+      return await this.request("/devices" + (name ? "?name=" + name : ""));
+    };
     ping = async () => {
       console.log("pinging");
       return await this.request("/ping");
@@ -3435,6 +3438,15 @@
         return await this.listFiles(...args);
       }
     };
+    async register() {
+      const res = await this.request("/register", this.serializeInstance(), "POST");
+      return res;
+    }
+    serializeInstance() {
+      return {
+        name: this.deviceName
+      };
+    }
     onMessage = (message) => {
       if (message.to !== this.deviceName) {
         return;
@@ -3461,8 +3473,15 @@
         body: data && JSON.stringify(data),
         method
       });
-      const resData = await res.json();
-      return resData;
+      let resData = null;
+      if (res.status === 200) {
+        resData = await res.json();
+      }
+      return {
+        data: resData?.data,
+        message: resData?.message,
+        status: res.status
+      };
     };
     connect = async () => {
       console.log("connecting");

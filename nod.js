@@ -1,4 +1,4 @@
-import server from './lib/server.js';
+import NodeServer from './lib/NodeServer.js';
 import NodeClient from './lib/nodeClient.js';
 
 //const server = require('./lib/server');
@@ -9,6 +9,7 @@ const command = process.argv[3];
 const commandArgs = process.argv.slice(4);//[4];
 
 if(mode === 'server') {
+    const server = new NodeServer();
     server.start();
 } else {
     const client = new NodeClient();

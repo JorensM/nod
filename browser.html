@@ -19,9 +19,7 @@
     <script src="./build/browser/nod.js"></script>
     <script>
         // import BrowserClient from './build/browser/nod.js';
-        console.log(nod);
-        nod.setName('browser');
-        nod.connect();
+        
 
         const output = document.getElementById('output');
 
@@ -40,9 +38,23 @@
         const inputForm = document.getElementById('input-form');
         const input = document.getElementById('input');
 
-        const stdout = (text) => {
-            output.innerHTML += text + '</br>';
+        const stdout = (text, className) => {
+            let parsedText = text;
+            if(typeof text === 'object') {
+                parsedText = '<pre>' + JSON.stringify(text, null, 1) + '</pre>';
+            }
+            output.innerHTML += `<span ${className ? 'class="' + className + '"' : ''}>` + parsedText + '</span>';
         }
+
+        console.log(nod);
+        nod.setName('browser');
+        nod.connect().then(async () => {
+            stdout('Connected to network');
+            const res = await nod.devices(nod.deviceName);
+            if(!res.data) {
+                stdout('Device not registered, permissions limited', 'warn');
+            }
+        });
 
         const commands = {
             'info': (args) => {
@@ -50,8 +62,14 @@
             },
             'nod': async (command, ...commandArgs) => {
                 const res = await nod[command](...commandArgs);
-                stdout('Devices on network:');
-                stdout(res.data.join('</br>'));
+                console.log(res);
+                if(res.data) {
+                    stdout(res.data);
+                } else {
+                    stdout(res.message);
+                }
+                // stdout('Devices on network:');
+                // stdout(res.data.join('</br>'));
             }
         };
 

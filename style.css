@@ -18,6 +18,7 @@ body {
 
 .output {
     display: flex;
+    flex-direction: column;
     min-height: 40px;
     max-height: 100vh;
     flex-grow: 1;
@@ -48,4 +49,21 @@ input {
     color: inherit;
     font-family: inherit;
     font-size: inherit;
+}
+
+span {
+    height: fit-content;
+}
+
+pre {
+    background-color: rgb(15, 15, 15);
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    padding: 4px;
+    margin: 0px;
+}
+
+.warn {
+    color: rgb(187, 125, 11);
 }
