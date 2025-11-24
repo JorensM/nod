@@ -47,6 +47,11 @@
         const commands = {
             'info': (args) => {
                 stdout('Browser console is a CMD tool that works in the browser');
+            },
+            'nod': async (command, ...commandArgs) => {
+                const res = await nod[command](...commandArgs);
+                stdout('Devices on network:');
+                stdout(res.data.join('</br>'));
             }
         };
 
