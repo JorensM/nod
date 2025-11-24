@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Geo:ital@0;1&family=Jersey+10&display=swap');
+
+:root {
+    background-color: rgb(26, 26, 26);
+    margin: 0px;
+    font-family: 'Jersey 10';
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0px;
+    padding: 8px;
+    box-sizing: border-box;
+    gap: 8px;
+}
+
+.output {
+    display: flex;
+    min-height: 40px;
+    max-height: 100vh;
+    flex-grow: 1;
+    color: lightgray;
+    font-size: 1.2rem;
+    overflow-y: scroll;
+}
+
+.input-container {
+    display: flex;
+    color: lightgray;
+    align-items: center;
+    border-bottom: 2px solid rgb(112, 112, 112);
+    font-size: 1.1rem;
+    
+}
+
+input {
+    display: flex;
+    margin-bottom: auto;
+    box-sizing: border-box;
+    width: 100%;
+    background: transparent;
+    padding: 8px;
+    outline: none;
+    border: none;
+    border-radius: 2px;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+}

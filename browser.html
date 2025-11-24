@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <link rel="stylesheet" href="./style.css" />
     </head>
     <body>
-        <button id="list-devices">
-            List Devices
-        </button>
-        <ul id="devices">
+        <div class="output" id="output">
 
-        </ul>
+        </div>
+        <form
+            id="input-form"
+        >
+            <div class="input-container">
+                <span>></span>
+                <input id="input"/>
+            </div>
+        </form>
     </body>
     <script src="./build/browser/nod.js"></script>
     <script>
@@ -18,16 +23,49 @@
         nod.setName('browser');
         nod.connect();
 
-        const devicesList = document.getElementById('devices');
+        const output = document.getElementById('output');
 
-        document.getElementById('list-devices').addEventListener('click', async () => {
-            const devices = (await nod.list()).data;
-            console.log(devices);
-            devicesList.innerHTML = '';
+        // const devicesList = document.getElementById('devices');
 
-            const listStr = devices.map((device) => '<li>' + device + '</li>').join();
+        // document.getElementById('list-devices').addEventListener('click', async () => {
+        //     const devices = (await nod.list()).data;
+        //     console.log(devices);
+        //     devicesList.innerHTML = '';
 
-            devicesList.innerHTML = listStr;
+        //     const listStr = devices.map((device) => '<li>' + device + '</li>').join();
+
+        //     devicesList.innerHTML = listStr;
+        // });
+
+        const inputForm = document.getElementById('input-form');
+        const input = document.getElementById('input');
+
+        const stdout = (text) => {
+            output.innerHTML += text + '</br>';
+        }
+
+        const commands = {
+            'info': (args) => {
+                stdout('Browser console is a CMD tool that works in the browser');
+            }
+        };
+
+        const runCommand = async (fullCommand) => {
+            const argv = fullCommand.split(' ');
+            const command = argv[0];
+            const args = argv.slice(1);
+            commands[command](...args);
+        }
+
+        inputForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const command = input.value;
+            
+            runCommand(command).then(() => {
+                input.value = '';
+            });
+            output.scrollTop = output.scrollHeight;
+
         })
     </script>
 </html>
