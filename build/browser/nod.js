@@ -3395,6 +3395,7 @@
   // lib/client.js
   var BaseClient = class {
     deviceName = "unnamed device";
+    name = this.deviceName;
     port = 8e3;
     request = (path, data = null, method = "GET") => {
     };
@@ -3404,7 +3405,7 @@
      */
     send = (message) => {
     };
-    connect = (name) => {
+    connect = (name, hostname = "localhost") => {
     };
     onConnect = () => {
     };
@@ -3427,6 +3428,10 @@
     };
     setName = (name) => {
       this.deviceName = name;
+      this.name = name;
+      return {
+        message: "Renamed device to " + name
+      };
     };
     listFiles = async (device, path) => {
       if (!device) {
@@ -3461,7 +3466,7 @@
       }
       console.log("received message: ", message);
       if (message.type === "files/list") {
-        const sharedFolder = this.readSharedFolder();
+        const sharedFolder = this.readSharedFolder(message?.data?.path);
         this.send(new Message_default(this.deviceName, message.from, "files/list:", sharedFolder));
       } else if (message.type === "files/list:") {
         this.onReceiveFilesList(message.data);
@@ -3476,8 +3481,9 @@
      * @type { Socket }
      */
     socket;
+    hostname = "localhost";
     request = async (path, data = void 0, method = "GET") => {
-      const res = await fetch("http://localhost:8000" + path, {
+      const res = await fetch("http://" + this.hostname + ":8000" + path, {
         body: data && JSON.stringify(data),
         method
       });
@@ -3491,19 +3497,21 @@
         status: res.status
       };
     };
-    connect = async () => {
+    connect = async (name) => new Promise((resolve) => {
       console.log("connecting");
-      this.socket = lookup2("http://localhost:8000");
+      this.socket = lookup2("http://" + this.hostname + ":8000");
       this.socket.on("connect", (socket) => {
         console.log("connected");
+        resolve({
+          message: "Connected to network"
+        });
         this.onConnect();
       });
       this.socket.on("message", (messageStr) => {
         const message = Message_default.parse(messageStr);
         this.onMessage(message);
       });
-      return "ok";
-    };
+    });
     send = async (message) => {
       this.socket.send(message.toString());
     };

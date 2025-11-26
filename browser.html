@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="./style.css" />
+        <meta name="viewport" content="width=device-width;intial-scale=1;interactive-widget=resizes-content" />
     </head>
     <body>
         <div class="output" id="output">
@@ -18,26 +19,6 @@
     </body>
     <script src="./build/browser/nod.js"></script>
     <script>
-        // import BrowserClient from './build/browser/nod.js';
-        
-
-        const output = document.getElementById('output');
-
-        // const devicesList = document.getElementById('devices');
-
-        // document.getElementById('list-devices').addEventListener('click', async () => {
-        //     const devices = (await nod.list()).data;
-        //     console.log(devices);
-        //     devicesList.innerHTML = '';
-
-        //     const listStr = devices.map((device) => '<li>' + device + '</li>').join();
-
-        //     devicesList.innerHTML = listStr;
-        // });
-
-        const inputForm = document.getElementById('input-form');
-        const input = document.getElementById('input');
-
         const stdout = (text, className) => {
             let parsedText = text;
             if(typeof text === 'object') {
@@ -45,55 +26,82 @@
             }
             output.innerHTML += `<span ${className ? 'class="' + className + '"' : ''}>` + parsedText + '</span>';
         }
+        // import BrowserClient from './build/browser/nod.js';
+        try {
+            const output = document.getElementById('output');
 
-        console.log(nod);
-        nod.onEvent = async (type, data) => {
-            console.log(type);
-            console.log(data);
-            stdout(data);
-        }
-        nod.setName('browser');
-        nod.connect().then(async () => {
-            stdout('Connected to network');
-            const res = await nod.devices(nod.deviceName);
-            if(!res.data) {
-                stdout('Device not registered, permissions limited', 'warn');
+            // const devicesList = document.getElementById('devices');
+
+            // document.getElementById('list-devices').addEventListener('click', async () => {
+            //     const devices = (await nod.list()).data;
+            //     console.log(devices);
+            //     devicesList.innerHTML = '';
+
+            //     const listStr = devices.map((device) => '<li>' + device + '</li>').join();
+
+            //     devicesList.innerHTML = listStr;
+            // });
+
+            const inputForm = document.getElementById('input-form');
+            const input = document.getElementById('input');
+
+            console.log(nod);
+            nod.onEvent = async (type, data) => {
+                console.log(type);
+                console.log(data);
+                stdout(data);
             }
-        });
-
-        const commands = {
-            'info': (args) => {
-                stdout('Browser console is a CMD tool that works in the browser');
-            },
-            'nod': async (command, ...commandArgs) => {
-                const res = await nod[command](...commandArgs);
-                console.log(res);
-                if(res.data) {
-                    stdout(res.data);
-                } else {
-                    stdout(res.message);
+            nod.setName('browser');
+            const hostname = new URL(window.origin).hostname
+            stdout(hostname);
+            nod.hostname = hostname;
+            // stdout('Device name: ' + nod.name);
+            nod.connect(nod.name, hostname).then(async (_res) => {
+                stdout(_res.message);
+                const res = await nod.devices(nod.deviceName);
+                if(!res.data) {
+                    stdout('Device not registered, permissions limited', 'warn');
                 }
-                // stdout('Devices on network:');
-                // stdout(res.data.join('</br>'));
-            }
-        };
+            });
 
-        const runCommand = async (fullCommand) => {
-            const argv = fullCommand.split(' ');
-            const command = argv[0];
-            const args = argv.slice(1);
-            commands[command](...args);
+            const commands = {
+                'info': (args) => {
+                    stdout('Browser console is a CMD tool that works in the browser');
+                },
+                'nod': async (command, ...commandArgs) => {
+                    const res = await nod[command](...commandArgs);
+                    console.log(res);
+                    if(res.data) {
+                        stdout(res.data);
+                    } else {
+                        stdout(res.message);
+                    }
+                    // stdout('Devices on network:');
+                    // stdout(res.data.join('</br>'));
+                }
+            };
+
+            const runCommand = async (fullCommand) => {
+                const argv = fullCommand.split(' ');
+                const command = argv[0];
+                const args = argv.slice(1);
+                commands[command](...args);
+            }
+
+            inputForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const command = input.value;
+                
+                runCommand(command).then(() => {
+                    input.value = '';
+                });
+                output.scrollTop = output.scrollHeight;
+
+            })
+        } catch (e) {
+            stdout(e);
         }
 
-        inputForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const command = input.value;
-            
-            runCommand(command).then(() => {
-                input.value = '';
-            });
-            output.scrollTop = output.scrollHeight;
-
-        })
+        
     </script>
 </html>
