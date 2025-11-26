@@ -47,6 +47,11 @@
         }
 
         console.log(nod);
+        nod.onEvent = async (type, data) => {
+            console.log(type);
+            console.log(data);
+            stdout(data);
+        }
         nod.setName('browser');
         nod.connect().then(async () => {
             stdout('Connected to network');

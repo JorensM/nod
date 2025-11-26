@@ -3367,7 +3367,7 @@
   });
 
   // lib/Message.js
-  var Message2 = class _Message {
+  var Message = class _Message {
     constructor(from, to, type, data) {
       this.type = type;
       this.data = data;
@@ -3390,7 +3390,7 @@
       return new _Message(type, data);
     }
   };
-  var Message_default = Message2;
+  var Message_default = Message;
 
   // lib/client.js
   var BaseClient = class {
@@ -3410,7 +3410,7 @@
     };
     readSharedFolder = () => {
     };
-    onReceiveFilesList = () => {
+    onReceiveFilesList = (data) => {
     };
     list = async () => {
       return await this.request("/list");
@@ -3429,7 +3429,15 @@
       this.deviceName = name;
     };
     listFiles = async (device, path) => {
+      if (!device) {
+        return {
+          message: "Device not specified"
+        };
+      }
       this.send(new Message_default(this.deviceName, device, "files/list", { path }));
+      return {
+        message: "Retrieving files"
+      };
     };
     files = async (command, ...args) => {
       console.log(...args);
@@ -3491,13 +3499,18 @@
         this.onConnect();
       });
       this.socket.on("message", (messageStr) => {
-        const message = Message.parse(messageStr);
+        const message = Message_default.parse(messageStr);
         this.onMessage(message);
       });
       return "ok";
     };
     send = async (message) => {
       this.socket.send(message.toString());
+    };
+    onReceiveFilesList = async (data) => {
+      return await this.onEvent("receiveFilesList", data);
+    };
+    onEvent = async (type, data) => {
     };
   };
   window.nod = new BrowserClient();
