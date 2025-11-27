@@ -74,6 +74,27 @@
                     stdout('Browser console is a CMD tool that works in the browser');
                 },
                 'nod': async (command, ...commandArgs) => {
+                    if(command === 'help') {
+                        // Todo: multi-line stdout
+                        // Todo: indents
+                        const fullText = `
+                            \n
+                            nod is a command line utility for interacting with your local nod network\n
+                            ------\n
+                            Commands:\n
+                                nod setName - set name of current device\n
+                                nod register - register current device on the network\n
+                                nod devices - list devices registered on the network\n
+                                nod files <subCommand> - interact with file systems of devices\n
+                            ------\n
+                            Run \`nod <command> help\` to see detailed instructions for an individual command
+                        `
+
+                        fullText.split('\n').forEach((line) => {
+                            stdout(line);
+                        })
+                        return;
+                    }
                     const res = await nod[command](...commandArgs);
                     console.log(res);
                     if(res.data) {
