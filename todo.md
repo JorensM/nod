@@ -18,11 +18,14 @@ Develop a communication protocol between devices on local network
 * Ability to download files
     * Client
         * ~~Send request file message~~
+        * ~~getSharedFolderByNetworkPath(path)~~
+        * ~~resolveSharedFolderFullPathByNetworkPath(folderPath, path)~~
+        * NodeClient - getFile(fullPath)
         * Respond to request file message
-    * FileTransferRequestMessage
+    * FileTransferRequest
         * device
         * path
-    * FileTransferResponseMessage
+    * FileTransferResponse
         * to
         * file?
         * accepted (whether requested device accepted transfer)
