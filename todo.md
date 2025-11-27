@@ -10,3 +10,4 @@ Develop a communication protocol between devices on local network
 
 * Connection timeout
 * catch CORS error
+* Styling based on response type (red for errors, orange for warnings, green for success, blue for loading)

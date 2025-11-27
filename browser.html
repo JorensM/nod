@@ -65,7 +65,7 @@
                 stdout(_res.message);
                 const res = await nod.devices(nod.deviceName);
                 if(!res.data) {
-                    stdout('Device not registered, permissions limited', 'warn');
+                    stdout('Device not registered, permissions limited </br> Please register device with `nod register`', 'warn');
                 }
             });
 
