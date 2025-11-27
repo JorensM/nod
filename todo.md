@@ -2,27 +2,36 @@
 
 Develop a communication protocol between devices on local network
 
-## General
+# Priority
+* client.js > onMessage - move handling of particular messages to a separate function `getMessageHandler(type)`
+    * Registering handlers
+* client.js > files > move handling of particular commands to a separate function `getCommandHandler(command)`
+* NodRequest/NodResponse classes
+* SharedFileSystem class
 
+## General
+* Group into socket based commands and http based commands
 * Bugs
     * nod > devices > get by name returns incorrect response when devices is not found in browser
 * unit tests
 * Documentation
 * Ability to download files
     * Client
-        * Send download file message
-        * Respond to download file message
-    * Server
-        * Forward message to 
+        * ~~Send request file message~~
+        * Respond to request file message
+    * FileTransferRequestMessage
+        * device
+        * path
+    * FileTransferResponseMessage
+        * to
+        * file?
+        * accepted (whether requested device accepted transfer)
 
 ## Server
 * Change from `endpoints` constant to a different approach such as a `getEndpoint()` function
 that can return the endpoint function, description etc.
 
 ## Client
-* client.js > onMessage - move handling of particular messages to a separate function `getMessageHandler(type)`
-    * Registering handlers
-* client.js > files > move handling of particular commands to a separate function `getCommandHandler(command)`
 
 ## Browser
 
