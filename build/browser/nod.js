@@ -3398,7 +3398,10 @@
     name = this.deviceName;
     port = 8e3;
     config = {
-      sharedFolders: ["./shared"]
+      sharedFolders: [{
+        fullPath: "./shared",
+        name: "shared"
+      }]
     };
     constructor(config) {
       if (config?.sharedFolders) {
@@ -3501,6 +3504,12 @@
       const res = await fetch("http://" + this.hostname + ":8000" + path, {
         body: data && JSON.stringify(data),
         method
+      }).catch(async (res2) => {
+        let resData2 = null;
+        return {
+          message: "Network error",
+          status: res2.status
+        };
       });
       let resData = null;
       if (res.status === 200) {
