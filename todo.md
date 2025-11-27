@@ -9,10 +9,20 @@ Develop a communication protocol between devices on local network
 * unit tests
 * Documentation
 * Ability to download files
+    * Client
+        * Send download file message
+        * Respond to download file message
+    * Server
+        * Forward message to 
 
 ## Server
 * Change from `endpoints` constant to a different approach such as a `getEndpoint()` function
 that can return the endpoint function, description etc.
+
+## Client
+* client.js > onMessage - move handling of particular messages to a separate function `getMessageHandler(type)`
+    * Registering handlers
+* client.js > files > move handling of particular commands to a separate function `getCommandHandler(command)`
 
 ## Browser
 
