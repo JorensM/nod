@@ -3397,6 +3397,14 @@
     deviceName = "unnamed device";
     name = this.deviceName;
     port = 8e3;
+    config = {
+      sharedFolders: ["./shared"]
+    };
+    constructor(config) {
+      if (config?.sharedFolders) {
+        this.config.sharedFolders = this.config.sharedFolders.concat(config.sharedFolders);
+      }
+    }
     request = (path, data = null, method = "GET") => {
     };
     /**
@@ -3465,11 +3473,18 @@
         return;
       }
       console.log("received message: ", message);
-      if (message.type === "files/list") {
-        const sharedFolder = this.readSharedFolder(message?.data?.path);
-        this.send(new Message_default(this.deviceName, message.from, "files/list:", sharedFolder));
-      } else if (message.type === "files/list:") {
-        this.onReceiveFilesList(message.data);
+      if (message.type === "error") {
+        this.onError(message);
+      }
+      try {
+        if (message.type === "files/list") {
+          const sharedFolder = this.readSharedFolder(message?.data?.path);
+          this.send(new Message_default(this.deviceName, message.from, "files/list:", sharedFolder));
+        } else if (message.type === "files/list:") {
+          this.onReceiveFilesList(message.data);
+        }
+      } catch (e) {
+        this.send(new Message_default(this.deviceName, message.from, "error", e.toString()));
       }
     };
   };
@@ -3517,6 +3532,9 @@
     };
     onReceiveFilesList = async (data) => {
       return await this.onEvent("receiveFilesList", data);
+    };
+    onError = async (e) => {
+      return await this.onEvent("error", e);
     };
     onEvent = async (type, data) => {
     };

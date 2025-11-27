@@ -9,7 +9,9 @@ const command = process.argv[3];
 const commandArgs = process.argv.slice(4);//[4];
 
 if(mode === 'server') {
-    const server = new NodeServer();
+    const server = new NodeServer({
+        sharedFolders: [ {fullPath: 'C:\\Users\\joren\\Desktop\\notes', name: 'notes'} ]
+    });
     server.start();
 } else {
     const client = new NodeClient();

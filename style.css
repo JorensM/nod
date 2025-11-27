@@ -33,7 +33,8 @@ body {
     align-items: center;
     border-bottom: 2px solid rgb(112, 112, 112);
     font-size: 1.1rem;
-    
+    /* position: fixed;
+    bottom: 0px; */
 }
 
 input {
@@ -51,6 +52,10 @@ input {
     font-size: inherit;
 }
 
+/* .input-container:hover body {
+    height: 10dvh;
+} */
+
 span {
     height: fit-content;
 }
@@ -66,4 +71,11 @@ pre {
 
 .warn {
     color: rgb(187, 125, 11);
+}
+
+
+@media screen and (max-width: 400px) {
+    body:has(input:focus) {
+        height: 50dvh;
+    }
 }

@@ -19,6 +19,7 @@
     </body>
     <script src="./build/browser/nod.js"></script>
     <script>
+        //navigator.virtualKeyboard.overlaysContent = false;
         const stdout = (text, className) => {
             let parsedText = text;
             if(typeof text === 'object') {
@@ -26,6 +27,10 @@
             }
             output.innerHTML += `<span ${className ? 'class="' + className + '"' : ''}>` + parsedText + '</span>';
         }
+
+        // visualViewport.addEventListener('resize', () => {
+        //     stdout(visualViewport.height);
+        // })
         // import BrowserClient from './build/browser/nod.js';
         try {
             const output = document.getElementById('output');
